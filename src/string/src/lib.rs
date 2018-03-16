@@ -47,14 +47,17 @@ pub unsafe extern "C" fn memchr(s: *const c_void, c: c_int, n: usize) -> *mut c_
     ptr::null_mut()
 }
 
-// #[no_mangle]
-// pub extern "C" fn memcmp(
-//     s1: *const c_void,
-//     s2: *const c_void,
-//     n: usize,
-// ) -> c_int {
-//     unimplemented!();
-// }
+#[no_mangle]
+pub extern "C" fn memcmp(s1: *const c_void, s2: *const c_void, n: usize) -> c_int {
+    let s1 = s1 as *mut u8;
+    let s2 = s2 as *mut u8;
+    for i in 0..n {
+        if *s1.offset(i) != *s2.offset(i) {
+            return *s1.offset(i) - *s2.offset(i);
+        }
+    }
+    0
+}
 
 // #[no_mangle]
 // pub extern "C" fn memcpy(
